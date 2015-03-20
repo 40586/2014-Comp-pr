@@ -1,0 +1,24 @@
+Task one 3(a)
+q1. GetPlayerName
+q2. if input is blank, repeat
+q3. continue, Boolean 
+
+FUNCTION GetPlayerName
+	OUTPUT ""
+	continue <- True
+	WHILE continue == True
+		OUTPUT "Please enter your name
+		PlayerName = INPUT
+		IF PlayerName != "" THEN
+			continue = False 
+		ELSE
+			OUTPUT "Please enter something for your name"
+		ENDIF
+	OUTPUT ""
+	ENDWHILE
+	RETURN PlayerName
+ENDFUNCTION
+
+3(b)
+q1. UpdateRecentScores
+

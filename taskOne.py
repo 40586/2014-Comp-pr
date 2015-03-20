@@ -5,6 +5,7 @@
 # version 2 edited 06/03/2014
 
 import random
+from datetime import *
 
 NO_OF_RECENT_SCORES = 3
 
@@ -17,6 +18,7 @@ class TRecentScore():
   def __init__(self):
     self.Name = ''
     self.Score = 0
+    self.Date = '' #task 5
 
 Deck = [None]
 RecentScores = [None]
@@ -126,15 +128,14 @@ def IsNextCardHigher(LastCard, NextCard):
   if NextCard.Rank > LastCard.Rank:
     Higher = True
   return Higher
-#NEEDS WORK
+
 def GetPlayerName():
   print()
   cont = True
-  while cont = True:
-    cont = True
+  while cont == True:
     PlayerName = input('Please enter your name: ')
     if PlayerName != "":
-      False
+      cont = False
   print()
   return PlayerName
 
@@ -161,34 +162,40 @@ def ResetRecentScores(RecentScores):
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores[Count].Name = ''
     RecentScores[Count].Score = 0
+    REcentScores[Count].Date = ''
 
 def DisplayRecentScores(RecentScores):
   print()
   print('Recent Scores: ')
   print()
+  print(" {0:<9} {1:<6} {2:<9}".format("Names","Scores","Dates"))
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
-    print(RecentScores[Count].Name, 'got a score of', RecentScores[Count].Score)
+    print(" {0:<9} {1:<6} {2:<9}".format(RecentScores[Count].Name,RecentScores[Count].Score,RecentScores[Count].Date)) #Task 5
   print()
   print('Press the Enter key to return to the main menu')
   input()
   print()
 
-def UpdateRecentScores(RecentScores, Score):
-  PlayerName = GetPlayerName()
-  FoundSpace = False
-  Count = 1
-  while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
-    if RecentScores[Count].Name == '':
-      FoundSpace = True
-    else:
-      Count = Count + 1
-  if not FoundSpace:
-    for Count in range(1, NO_OF_RECENT_SCORES):
-      RecentScores[Count].Name = RecentScores[Count + 1].Name
-      RecentScores[Count].Score = RecentScores[Count + 1].Score
-    Count = NO_OF_RECENT_SCORES
-  RecentScores[Count].Name = PlayerName
-  RecentScores[Count].Score = Score
+def UpdateRecentScores(RecentScores, Score, date):
+  check = input("Do you want to ad your score to the high score table?(Y-N): ")
+  if check[:1].lower() == "y":
+    PlayerName = GetPlayerName()
+    FoundSpace = False
+    Count = 1
+    while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
+      if RecentScores[Count].Name == '':
+        FoundSpace = True
+      else:
+        Count = Count + 1
+    if not FoundSpace:
+      for Count in range(1, NO_OF_RECENT_SCORES):
+        RecentScores[Count].Name = RecentScores[Count + 1].Name
+        RecentScores[Count].Score = RecentScores[Count + 1].Score
+        RecentScores[Count].Date = RecentScores[Count + 1].date# task 5
+      Count = NO_OF_RECENT_SCORES
+    RecentScores[Count].Name = PlayerName
+    RecentScores[Count].Score = Score
+    RecentScores[Count].Date = date
 
 def PlayGame(Deck, RecentScores):
   LastCard = TCard()
@@ -212,8 +219,10 @@ def PlayGame(Deck, RecentScores):
     else:
       GameOver = True
   if GameOver:
+    date_ = datetime.now()#task 5
+    date = datetime.strftime(date_,'%d/%m/%Y')
     DisplayEndOfGameMessage(NoOfCardsTurnedOver - 2)
-    UpdateRecentScores(RecentScores, NoOfCardsTurnedOver - 2)
+    UpdateRecentScores(RecentScores, NoOfCardsTurnedOver - 2,date)
   else:
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
