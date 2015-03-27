@@ -55,7 +55,7 @@ Test Data:
 Test Number | Test Description                | Test Data | Type      | Expected Result              | Actual Result |
 ----------------------------------------------------------------------------------------------------------------------
 1           | Ace=1,is king hearts higher?    |    Yes    | Bot Bound | Win round                    | Win           |
-2           | Ace =1, is king hearts lower?   |    no     | Top Bound | lose round                   | loss          |
+2           | Ace=1, is king hearts lower?    |    no     | Top Bound | lose round                   | loss          |
 3           | Ace=13, is king hearts lower?   |   Yes     | Top Bound | Win round                    | win           | 
 4           | Ace=13, is king hearts higher   |   Yes     | Bot Bound | lose round                   | loss          |
 5           | Ace=1, is five spades higher?   |   Yes     | Normal    | Win round                    | Win           |
@@ -65,15 +65,18 @@ Test Number | Test Description                | Test Data | Type      | Expected
 Pseudo code: Task 7
 
 FUNCTION BubbleSortScores(RecentScores):
-	FOR temp1 IN RANGE(LEN(RecentScores)):
-		FOR temp2 IN RANGE(temp1):
-			IF RecentScores[temp2].score>RecentScores[temp2+1].score THEN
-				temp = RecentScores[temp2].score
-				RecentScores[temp2+1].score = RecentScores[temp2].score
-				RecentScores[temp2+1].score = temp
+	swaps <- True
+	WHILE swaps = True DO
+		swaps <- False
+		FOR index <- 1 TO LEN(RecentScores ) - 1 DO
+			IF RecentScores[index].score<RecentScores[index+1].score THEN
+				swaps <- True 
+				temp <- RecentScores[index]
+				RecentScores[index] <- RecentScores[index+1]
+				RecentScores[index+1] <- temp
 			END IF
 		ENDFOR
-	ENDFOR
+	ENDWHILE
 ENDFUNCTION
 ###########################################################################################################
 
