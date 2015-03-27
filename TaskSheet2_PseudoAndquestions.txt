@@ -1,4 +1,80 @@
 Task 6:
-q1. 
+q1. In the main code at the bottom, to allow it to be sent to the required functions
 q2. DisplayMenu
 q3. GetRank
+
+Pseudo code:
+###########################################################################################################
+FUNCTION DisplayOptions():
+	OUTPUT ''
+	OUTPUT '1. Ace Value '
+	OUTPUT ''
+	OptionChoice <- GetOptionsChoice()
+	SetOptions(GetOptionsChoice)
+END FUNCTION
+
+FUNCTION GetOptionsChoice():
+	WHILE cont = False THEN
+		OUTPUT ' Please select from the menu: '
+		OptionChoice <- INPUT
+		IF OptionChoice = '1' THEN
+			cont = True
+		ELSE
+			OUTPUT ' Please enter a valid value'
+		END IF
+	END WHILE
+	RETURN OptionChoice
+END FUNCTION
+
+FUNCTION SetOptions(OptionChoice):
+	IF OptionChoice = '1' THEN
+		SetAceHighOrLow()
+	ELSE
+		OUTPUT 'Please enter a valid value'
+	END IF
+ENDFUNCTION
+
+FUNCTION SetAceHighOrLow():
+	WHILE cont = False THEN
+		OUTPUT 'Would you like to set Ace to high or low? (H/L)
+		temp <- INPUT
+		IF temp = 'H' THEN
+			Ace <- [13,1,2,3,4,5,6,7,8,9,10,11,12]
+			cont = True
+		ELSE IF temp = 'L' THEN
+			Ace <- [1,2,3,4,5,6,7,8,9,10,11,12,13]
+			cont = True
+		ELSE
+			OUTPUT 'Please enter a valid value'
+		END IF
+	END WHILE
+ENDFUNCTION
+###########################################################################################################
+
+Test Data:
+Test Number | Test Description                | Test Data | Type      | Expected Result              | Actual Result |
+----------------------------------------------------------------------------------------------------------------------
+1           | Ace=1,is king hearts higher?    |    Yes    | Bot Bound | Win round                    | Win           |
+2           | Ace =1, is king hearts lower?   |    no     | Top Bound | lose round                   | loss          |
+3           | Ace=13, is king hearts lower?   |   Yes     | Top Bound | Win round                    | win           | 
+4           | Ace=13, is king hearts higher   |   Yes     | Bot Bound | lose round                   | loss          |
+5           | Ace=1, is five spades higher?   |   Yes     | Normal    | Win round                    | Win           |
+6           | Ace=13, is king spades higher?  |   Cake    | Erroneous | 'Please enter a valid value' | As Expected   |
+
+###########################################################################################################
+Pseudo code: Task 7
+
+FUNCTION BubbleSortScores(RecentScores):
+	FOR temp1 IN RANGE(LEN(RecentScores)):
+		FOR temp2 IN RANGE(temp1):
+			IF RecentScores[temp2].score>RecentScores[temp2+1].score THEN
+				temp = RecentScores[temp2].score
+				RecentScores[temp2+1].score = RecentScores[temp2].score
+				RecentScores[temp2+1].score = temp
+			END IF
+		ENDFOR
+	ENDFOR
+ENDFUNCTION
+###########################################################################################################
+
+

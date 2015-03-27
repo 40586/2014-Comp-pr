@@ -24,33 +24,33 @@ Deck = [None]
 RecentScores = [None]
 Choice = ''
 
-def GetRank(RankNo):
+def GetRank(RankNo,Ace):
   Rank = ''
-  if RankNo == 1:
+  if RankNo == Ace[0]:
     Rank = 'Ace'
-  elif RankNo == 2:
+  elif RankNo == Ace[1]:
     Rank = 'Two'
-  elif RankNo == 3:
+  elif RankNo == Ace[2]:
     Rank = 'Three'
-  elif RankNo == 4:
+  elif RankNo == Ace[3]:
     Rank = 'Four'
-  elif RankNo == 5:
+  elif RankNo == Ace[4]:
     Rank = 'Five'
-  elif RankNo == 6:
+  elif RankNo == Ace[5]:
     Rank = 'Six'
-  elif RankNo == 7:
+  elif RankNo == Ace[6]:
     Rank = 'Seven'
-  elif RankNo == 8:
+  elif RankNo == Ace[7]:
     Rank = 'Eight'
-  elif RankNo == 9:
+  elif RankNo == Ace[8]:
     Rank = 'Nine'
-  elif RankNo == 10:
+  elif RankNo == Ace[9]:
     Rank = 'Ten'
-  elif RankNo == 11:
+  elif RankNo == Ace[10]:
     Rank = 'Jack'
-  elif RankNo == 12:
+  elif RankNo == Ace[11]:
     Rank = 'Queen'
-  elif RankNo == 13:
+  elif RankNo == Ace[12]:
     Rank = 'King'
   return Rank
 
@@ -74,6 +74,7 @@ def DisplayMenu():
   print('2. Play game (without shuffle)')
   print('3. Display recent scores')
   print('4. Reset recent scores')
+  print('5. Options')
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
 
@@ -109,9 +110,9 @@ def ShuffleDeck(Deck):
     Deck[Position2].Rank = SwapSpace.Rank
     Deck[Position2].Suit = SwapSpace.Suit
 
-def DisplayCard(ThisCard):
+def DisplayCard(ThisCard,Ace):
   print()
-  print('Card is the', GetRank(ThisCard.Rank), 'of', GetSuit(ThisCard.Suit))
+  print('Card is the', GetRank(ThisCard.Rank,Ace), 'of', GetSuit(ThisCard.Suit))
   print()
 
 def GetCard(ThisCard, Deck, NoOfCardsTurnedOver):
@@ -196,20 +197,21 @@ def UpdateRecentScores(RecentScores, Score, date):
     RecentScores[Count].Name = PlayerName
     RecentScores[Count].Score = Score
     RecentScores[Count].Date = date
+    BubbleSortScores(RecentScores)
 
-def PlayGame(Deck, RecentScores):
+def PlayGame(Deck, RecentScores,Ace):
   LastCard = TCard()
   NextCard = TCard()
   GameOver = False
   GetCard(LastCard, Deck, 0)
-  DisplayCard(LastCard)
+  DisplayCard(LastCard,Ace)
   NoOfCardsTurnedOver = 1
   while (NoOfCardsTurnedOver < 52) and (not GameOver):
     GetCard(NextCard, Deck, NoOfCardsTurnedOver)
     Choice = ''
     while (Choice != 'y') and (Choice != 'n'):
       Choice = GetChoiceFromUser()
-    DisplayCard(NextCard)
+    DisplayCard(NextCard,Ace)
     NoOfCardsTurnedOver = NoOfCardsTurnedOver + 1
     Higher = IsNextCardHigher(LastCard, NextCard)
     if (Higher and Choice == 'y') or (not Higher and Choice == 'n'):
@@ -227,23 +229,78 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
+def DisplayOptions():
+  print()
+  print('1. Ace Value')
+  print()
+  OptionsChoice = GetOptionsChoice()
+  Ace = SetOptions(OptionsChoice)
+  return Ace
+
+def GetOptionsChoice():
+  cont = False
+  while cont == False:
+    OptionsChoice = input('Please select from the menu: ')
+    print()
+    if OptionsChoice == '1':
+      cont = True
+    else:
+      print('Please enter a valid value: ')
+  return OptionsChoice
+
+def SetOptions(OptionsChoice):
+  if OptionsChoice == '1':
+    Ace = SetAceHighOrLow()
+  return Ace
+
+def SetAceHighOrLow():
+  cont = False
+  Ace = []
+  while cont == False:
+    temp = input('Would you like to set Ace to (H)igh or (L)ow?: ')
+    if temp[:1].lower() == 'h':
+      Ace = [13,1,2,3,4,5,6,7,8,9,10,11,12]
+      cont = True
+    elif temp[:1].lower() == 'l':
+      Ace = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+      cont = True
+    else:
+      print('Please enter a valid value')
+  return Ace
+
+def BubbleSortScores(RecentScores):
+  count2 = 1
+  swaps = True
+  while swaps:
+    swaps = False
+    for temp1 in range(len(RecentScores)-count2):
+      for temp in RecentScores:
+        if temp[temp1+1].Score<temp[temp1].Score:
+          temp3 = temp[temp1+1]
+          temp[temp1+1] = temp[temp1]
+          temp[temp1] = temp3
+
+
 if __name__ == '__main__':
   for Count in range(1, 53):
     Deck.append(TCard())
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
     RecentScores.append(TRecentScore())
   Choice = ''
+  Ace = [1,2,3,4,5,6,7,8,9,10,11,12,13]
   while Choice != 'q':
     DisplayMenu()
     Choice = GetMenuChoice()
     if Choice == '1':
       LoadDeck(Deck)
       ShuffleDeck(Deck)
-      PlayGame(Deck, RecentScores)
+      PlayGame(Deck, RecentScores,Ace)
     elif Choice == '2':
       LoadDeck(Deck)
-      PlayGame(Deck, RecentScores)
+      PlayGame(Deck, RecentScores,Ace)
     elif Choice == '3':
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
+    elif Choice == '5':
+      Ace = DisplayOptions()
